@@ -15,6 +15,7 @@ function initTabNav() {
         });
     };
 };
+initTabNav();
 
 function initAccordion() {
     const accordionList = document.querySelectorAll('.js-accordion dt');
@@ -30,23 +31,49 @@ function initAccordion() {
         });
     };
 };
+initAccordion();
 
-const linksInternos = document.querySelectorAll('.js-menu a[href^="#"]')
+function initScrollSmooth() {
+    const linksInternos = document.querySelectorAll('.js-menu a[href^="#"]')
+    linksInternos.forEach((link) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault()
+            const href = e.target.getAttribute('href');
+            const section = document.querySelector(href);
+            section.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            })
 
-linksInternos.forEach((link) => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault()
-        const href = e.target.getAttribute('href');
-        const section = document.querySelector(href);
-        const topSection = section.offsetTop;
-        console.log(top)
-
-        window.scrollTo({
-            top: topSection,
-            behavior: 'smooth'
+            //  Forma alternativa
+            // const topSection = section.offsetTop;
+            // window.scrollTo({
+            //     top: topSection,
+            //     behavior: 'smooth'
+            // });
         });
     });
-});
+}
+initScrollSmooth()
 
-initTabNav();
-initAccordion();
+function initAnimationScroll() {
+    const sections = document.querySelectorAll('.js-scroll');
+
+    if (sections.length) {
+        const windowMetade = window.innerHeight * 0.6
+
+        function animaScroll() {
+            sections.forEach((item) => {
+                const sectionTop = item.getBoundingClientRect().top;
+                const isSectionVisible = (sectionTop - windowMetade) < 0;
+                if (isSectionVisible)
+                    item.classList.add('ativo')
+                else
+                    item.classList.remove('ativo')
+            })
+        }
+        animaScroll()
+        window.addEventListener('scroll', animaScroll)
+    }
+}
+initAnimationScroll()
